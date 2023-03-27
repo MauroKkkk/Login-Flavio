@@ -1,18 +1,28 @@
 import React from 'react';
-import { View, StyleSheet, TouchableOpacity } from 'react-native';
+import { View, StyleSheet, Text, TouchableOpacity } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
-
+import { getAuth } from "firebase/auth";
 
 
 
 
 export default function Home() {
     const nav = useNavigation();
+    const auth = getAuth();
+    const user = auth.currentUser;
+    
+    if (user) {
+        console.log("AAAAAAAAAAA")
+        console.log(user)
+      nav.navigate("Page")
+    } else {
+      // No user is signed in.
+    }
  return (
    <View style={styles.Container}>
         <View style={styles.Card}>
-            <TouchableOpacity onPress={() => nav.navigate("Login")} style={styles.button}>Login</TouchableOpacity>
-            <TouchableOpacity style={styles.button}>SignUp</TouchableOpacity>
+            <TouchableOpacity onPress={() => nav.navigate("SignInPage")} style={styles.button}><Text style={styles.Text}>Login</Text></TouchableOpacity>
+            <TouchableOpacity style={styles.button} onPress={() => nav.navigate("SignUpPage")}><Text style={styles.Text}>Sign Up</Text></TouchableOpacity>
         </View>
    </View>
   );
@@ -30,16 +40,20 @@ const styles = StyleSheet.create({
         justifyContent: "space-around",
         alignItems:'center',
         width:200,
-        height: 160,
+        height: 180,
     },
     button:{
         alignItems: "center",
         justifyContent: "center",
-        color: "white",
         borderRadius: 12,
-        width: 190,
-        height:50,
+        width: 200,
+        height:60,
         backgroundColor: "#02D5FF",
+    },
+    Text:{
+        color: "white",
+        fontSize: 21,
+        fontWeight: 700,
     }
 
 })
