@@ -1,10 +1,10 @@
 import React, { useEffect, useState } from 'react';
-import { View, Text, StyleSheet, Image, TextInput } from 'react-native';
-import { TouchableOpacity } from 'react-native';
+import { View, Text, StyleSheet, Image, TextInput, TouchableOpacity } from 'react-native';
+import { Header } from 'react-native-elements';
+import BottomBar from './BottomBar';
 import { useNavigation } from '@react-navigation/native';
 import { getAuth, sendEmailVerification, sendPasswordResetEmail, updateProfile } from "firebase/auth";
-import ChangePassword from './ChangePassword';
-import { ref, getDownloadURL, uploadBytesResumable } from "firebase/storage";
+
 
 // Create a root reference
 
@@ -61,30 +61,23 @@ function ChangePassword(auth, email) {
 }
 
  return (
-   <View style={styles.Container}>
-        <Text>{email}</Text>
-        <Text>Email verificado: {user.emailVerified ? <Text>Sim</Text> : <Text>Não</Text>}</Text>
-        <Image
-        style={styles.tinyLogo}
-        source={{
-          uri: photoURL,
-        }}
-        />
-
-        <TouchableOpacity style={styles.button} onPress={() => ChangePassword(auth, email)}><Text style={styles.Text}>Alterar Senha</Text></TouchableOpacity>
-        <TextInput style={styles.Input} placeholder={"Insira a URL da sua foto"} value={photoURL} onChangeText={(text) => setPhotoURL(text)}/>
-        <TouchableOpacity style={styles.button} onPress={() => AtualizarPerfil(photoURL)}><Text style={styles.Text}>Alterar Foto</Text></TouchableOpacity>
-        <TouchableOpacity style={styles.button} onPress={() => VerificarEmail()}><Text style={styles.Text}>Verificar email</Text></TouchableOpacity>
-   </View>
+    <View style={styles.Container}>
+      <BottomBar/>
+    </View>
   );
 }
 
 
 const styles = StyleSheet.create({
   Container:{
-    flex:1,
+    width: "100%",
+    height: "100%",
     justifyContent: "center",
     alignItems: "center",
+    flex:1
+  },
+  Bottom:{
+    marginBottom: 60
   },
   button:{
     alignItems: "center",
