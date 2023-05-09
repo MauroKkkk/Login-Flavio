@@ -4,12 +4,16 @@ import * as ImagePicker from "expo-image-picker";
 import BottomBar from './BottomBar';
 import MaterialIcons from "react-native-vector-icons/MaterialIcons";
 import Entypo from "react-native-vector-icons/Entypo";
+import {useNavigation} from "@react-navigation/native"
 
 
 export default function Create() {
     const [ image, setImage ] = useState("https://static.vecteezy.com/system/resources/thumbnails/002/534/006/small/social-media-chatting-online-blank-profile-picture-head-and-body-icon-people-standing-icon-grey-background-free-vector.jpg");
     const [ width, setWidth ] = useState(150);
     const [ height, setHeight ] = useState(300);
+
+    const nav = useNavigation();
+
 
     const handleImagePicker = async () => {
         const result = await ImagePicker.launchImageLibraryAsync({
@@ -31,7 +35,7 @@ export default function Create() {
         <View style={{marginTop: 12}}/>
         <View style={{padding: 25, flexDirection: "row", justifyContent: "space-between"}}>
             <TouchableOpacity><Entypo style={{color:"#e7e7e7"}} size={30} name="cross"/></TouchableOpacity>
-            <TouchableOpacity style={{backgroundColor:"#e60024", borderRadius: 20, width: 50, height: 40, justifyContent: "center", alignItems: "center"}}><Text style={{color: "#fff9f9"}}>Next</Text></TouchableOpacity>
+            <TouchableOpacity onPress={() => nav.navigate("Save", {image})} style={{backgroundColor:"#e60024", borderRadius: 20, width: 50, height: 40, justifyContent: "center", alignItems: "center"}}><Text style={{color: "#fff9f9"}}>Next</Text></TouchableOpacity>
 
         </View>
 
