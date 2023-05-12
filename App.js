@@ -1,22 +1,65 @@
-import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, Text, View } from 'react-native';
-import React from 'react';
-import { createStackNavigator } from '@react-navigation/stack';
-import Home from './components/Home';
-import { NavigationContainer } from '@react-navigation/native';
+import { StyleSheet, Text } from 'react-native';
+import React, { useState } from 'react';
 import MyStack from './components/Routes';
-import { getAuth, onAuthStateChanged } from "firebase/auth";
-import Page from './components/Page';
 
+import { NavigationContainer } from '@react-navigation/native';
+import { createStackNavigator } from '@react-navigation/stack';
+import { Provider } from 'redux';
+import { applyMiddleware, createStore } from 'redux';
+import thunk from 'redux-thunk';
+import rootReducer from './redux/reducers';
+import Home from './components/Home';
+import { getAuth } from 'firebase/auth';
+
+const store = createStore(rootReducer, applyMiddleware(thunk))
+
+const Stack = createStackNavigator();
 
 export default function App() {
+ const [ loggedIn, setLoggedIn ] = useState(false)
+ const [ loaded, setLoaded ] = useState(false)
+ const auth = getAuth()
+  function componentDidMount() {
+    auth.onAuthStateChanged((user) => {
+      if (!user) {
 
-  return (
-    <NavigationContainer>
-      <MyStack/>
-    </NavigationContainer>
-  );
-}
+          setLoggedIn(false)
+          setLoaded(true);
+        
+      } else {
+
+          setLoggedIn(true)
+          setLoaded(true)
+
+      }
+    })
+  }
+    componentDidMount()
+    if (!loaded) {
+      return (
+        <Text>Carregando</Text>
+      )
+    }
+
+    if (!loggedIn) {
+      return (
+        <NavigationContainer>
+          <Stack.Navigator initialRouteName="Home">
+            <Stack.Screen name="Home" component={Home} options={{ headerShown: false }} />
+          </Stack.Navigator>
+        </NavigationContainer>
+      );
+    }
+
+    return (
+      <Provider store={store}>
+        <NavigationContainer >
+          <MyStack/>
+        </NavigationContainer>
+      </Provider>
+    )
+  }
+
 
 const styles = StyleSheet.create({
   container: {

@@ -10,7 +10,7 @@ export default function BottomBar(props) {
     return (
    <View style={[styles.Container, {marginTop: props.marginTop}]}>
     <View style={styles.Icon}>
-        <TouchableOpacity><Entypo size={25} style={{color: "#f1f1f1"}} name='home'/></TouchableOpacity>
+        <TouchableOpacity onPress={() => nav.navigate("Feed")}><Entypo size={25} style={{color: "#f1f1f1"}} name='home'/></TouchableOpacity>
         <Text style={{color:"#f1f1f1"}}>Home</Text>
     </View>
     <View style={styles.Icon}>

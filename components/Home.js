@@ -1,23 +1,16 @@
 import React from 'react';
 import { View, StyleSheet, Text, TouchableOpacity } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
-import { getAuth } from "firebase/auth";
+import auth from "./firebase";
 
 
 
 
 export default function Home() {
     const nav = useNavigation();
-    const auth = getAuth();
     const user = auth.currentUser;
     
-    if (user) {
-        console.log("AAAAAAAAAAA")
-        console.log(user)
-      nav.navigate("Page")
-    } else {
-      // No user is signed in.
-    }
+    
  return (
    <View style={styles.Container}>
         <View style={styles.Card}>

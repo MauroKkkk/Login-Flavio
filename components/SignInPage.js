@@ -22,7 +22,7 @@ export default function SignInPage() {
           const user = userCredential.user;
           setUser(user)
           console.log(user)
-          nav.navigate("Page")
+          nav.navigate("Feed")
         })
         .catch((error) => {
           const errorCode = error.code;

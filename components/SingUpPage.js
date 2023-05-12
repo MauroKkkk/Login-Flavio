@@ -1,10 +1,11 @@
 import React, { useState } from 'react';
 import { TouchableOpacity, View, TextInput, StyleSheet, Text } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
-import { createUserWithEmailAndPassword } from "firebase/auth";
+import { createUserWithEmailAndPassword, getAuth } from "firebase/auth";
+import { collection, getFirestore, addDoc, doc, setDoc } from 'firebase/firestore';
+
 import App from "./firebase";
 
-import { getAuth } from "firebase/auth";
 
 
 
@@ -15,19 +16,28 @@ import { getAuth } from "firebase/auth";
 
 
 export default function SignUpPage() {
+    
+    const db = getFirestore();
     const auth = getAuth();
     const nav = useNavigation();
+
     const [ user, setUser ] = useState("");
+    const [ name, setName ] = useState("");
     const [ email, setEmail ] = useState("");
     const [ password, setPassword ] = useState("");
     
     async function validar (auth, email, password){
         createUserWithEmailAndPassword(auth, email, password)
-        .then((userCredential) => {
-          const user = userCredential.user;
-          setUser(user)
-          console.log(user)
-          nav.navigate("Page")
+        .then(async () => {
+          const dbRef = collection(db, "users")
+          await setDoc(doc(dbRef, auth.currentUser.uid), {
+            email: email,
+            name: name
+          })
+          const user = auth.currentUser.uid;
+          setUser(user);
+          console.log(user);
+          nav.navigate("Create");
         })
         .catch((error) => {
           const errorCode = error.code;
@@ -44,8 +54,9 @@ export default function SignUpPage() {
       return (
     <View style={styles.Container}>
         <View style={styles.Card}>
+            <TextInput style={styles.Input} placeholder={"Name"} value={name} onChangeText={(text) => setName(text)}/>
             <TextInput style={styles.Input} placeholder={"Email"} keyboardType={"email-address"} value={email} onChangeText={(text) => setEmail(text)}/>
-            <TextInput style={styles.Input} placeholder={"Senha"} value={password} onChangeText={(text) => setPassword(text)}/>
+            <TextInput style={styles.Input} placeholder={"Password"} value={password} onChangeText={(text) => setPassword(text)}/>
         </View>
         <View style={{padding:25}}></View>
         <TouchableOpacity style={styles.button} onPress={ () => validar(auth, email, password) }><Text style={styles.Text}>Sign Up</Text></TouchableOpacity>
