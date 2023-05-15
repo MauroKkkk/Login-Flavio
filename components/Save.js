@@ -5,6 +5,7 @@ import { getAuth, onAuthStateChanged } from "firebase/auth";
 import { getStorage, ref, uploadBytes, getDownloadURL, uploadBytesResumable } from "firebase/storage";
 import { useNavigation } from "@react-navigation/native"
 import { getFirestore, doc, collection, addDoc, serverTimestamp, setDoc } from 'firebase/firestore';
+import BottomBar from './BottomBar';
 
 
 export default function Save(props) {
@@ -73,6 +74,7 @@ export default function Save(props) {
     <Image source={{uri: props.route.params.image}} style={{width:300, height: 300}}/>
     <TextInput placeholder='Digite uma legenda...' onChange={(caption) => setCaption(caption)}/>
     <TouchableOpacity onPress={() => uploadImage()}><Text>Save</Text></TouchableOpacity>
+    <BottomBar marginTop={300}/>
    </View>
   );
 }

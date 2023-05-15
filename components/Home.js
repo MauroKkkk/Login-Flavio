@@ -1,14 +1,13 @@
 import React from 'react';
 import { View, StyleSheet, Text, TouchableOpacity } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
-import auth from "./firebase";
 
 
 
 
 export default function Home() {
     const nav = useNavigation();
-    const user = auth.currentUser;
+
     
     
  return (
